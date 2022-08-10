@@ -35,5 +35,6 @@ public class Tehnomanija {
         File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(file,new File("src/results/"+name+".png"));
     }
+    //test
 
 }
