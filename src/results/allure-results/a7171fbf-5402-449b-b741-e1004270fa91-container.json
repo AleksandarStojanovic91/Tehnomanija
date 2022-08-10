@@ -1,0 +1,1 @@
+{"uuid":"a7171fbf-5402-449b-b741-e1004270fa91","name":"Tehnomanija.setup","children":["251ad906-5f87-4b97-80b8-08ac29fe38aa"],"description":"","befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1660157868545,"stop":1660157872923}],"afters":[],"links":[],"start":1660157868544,"stop":1660157872926}
