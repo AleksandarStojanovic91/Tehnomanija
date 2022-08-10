@@ -27,7 +27,7 @@ public class Tehnomanija {
 
     @Test(enabled = false)
     public void tehnomanija() {
-        driver.get("");
+        driver.get("something");
         
     }
 
