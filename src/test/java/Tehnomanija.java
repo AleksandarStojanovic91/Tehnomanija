@@ -35,7 +35,7 @@ public class Tehnomanija {
     public void tearDown() {
 //        driver.quit();
     }
-
+cedomir test
     @Test(description = "Ime testa")
     @Description("Opis testa")
     @Epic("EP-001")
