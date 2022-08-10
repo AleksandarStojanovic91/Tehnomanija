@@ -1,6 +1,7 @@
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -14,7 +15,7 @@ public class Tehnomanija {
 
     @BeforeMethod
     public void setup() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriverMac");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
@@ -25,10 +26,20 @@ public class Tehnomanija {
         driver.quit();
     }
 
-    @Test(enabled = false)
+    @Test()
     public void tehnomanija() {
-        driver.get("");
-        
+        driver.get("https://www.tehnomanija.rs/");
+
+        Actions actions = new Actions(driver);
+        actions.moveToElement(driver.findElement(By.cssSelector(".all-categories--title>div:first-child")))
+                .moveToElement(driver.findElement(By.cssSelector(".top-category-name-icon a[href='/telefoni']")))
+                .build().perform();
+
+        //HY
+
+
+
+
     }
 
     public void takeScreenshot(String name) throws IOException {
