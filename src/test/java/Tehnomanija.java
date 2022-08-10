@@ -2,6 +2,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -15,37 +16,67 @@ public class Tehnomanija {
 
     @BeforeMethod
     public void setup() {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriverMac");
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @AfterMethod
     public void tearDown() {
-        driver.quit();
+//        driver.quit();
     }
 
-    @Test()
-    public void tehnomanija() {
+    @Test(enabled = true)
+    public void tehnomanija() throws Exception {
         driver.get("https://www.tehnomanija.rs/");
 
+        selectMenuSubItem("telefoni"," Smart telefoni ");
+        selectCheckboxFilter("Interna memorija","8.0");
+
+        Thread.sleep(2000);
+        Assert.assertEquals(driver.findElement(By.cssSelector(".product-list>.product p")).getText(),"Alcatel 1C DS - Crni");
+    }
+
+    public void selectCheckboxFilter(String filterName, String filterValue) throws Exception {
+        if(driver.findElements(By.xpath("//span[text()='"+filterName+"']/../..//a[@data-cx-focus='"+filterValue+"']")).size()>0 && driver.findElements(By.xpath("//span[text()='"+filterName+"']/../..//a[@data-cx-focus='"+filterValue+"']")).get(0).isDisplayed()){
+            driver.findElement(By.xpath("//span[text()='"+filterName+"']/../..//a[@data-cx-focus='"+filterValue+"']")).click();
+        }else {
+            if(driver.findElements(By.xpath("//button/span[text()='"+filterName+"']")).size()>0){
+                driver.findElements(By.xpath("//button/span[text()='"+filterName+"']")).get(0).click();
+            }else {
+                throw new Exception("No such filter was found: "+filterName+ " "+filterValue);
+            }
+            if(driver.findElements(By.xpath("//span[text()='"+filterName+"']/../..//a[@data-cx-focus='"+filterValue+"']")).size()>0 && driver.findElements(By.xpath("//span[text()='"+filterName+"']/../..//a[@data-cx-focus='"+filterValue+"']")).get(0).isDisplayed()){
+                driver.findElement(By.xpath("//span[text()='"+filterName+"']/../..//a[@data-cx-focus='"+filterValue+"']")).click();
+            } else {
+                if(driver.findElements(By.xpath("//span[text()='"+filterName+"']/../..//button[contains(text(),'Prikaži više')]")).size()>0) {
+                    driver.findElements(By.xpath("//span[text()='"+filterName+"']/../..//button[contains(text(),'Prikaži više')]")).get(0).click();
+                    if(driver.findElements(By.xpath("//span[text()='" + filterName + "']/../..//a[@data-cx-focus='" + filterValue + "']")).size()>0){
+                        driver.findElements(By.xpath("//span[text()='" + filterName + "']/../..//a[@data-cx-focus='" + filterValue + "']")).get(0).click();
+                    } else {
+                        throw new Exception("No such filter was found: "+filterName+ " "+filterValue);
+                    }
+                }
+            }
+        }
+    }
+
+    public void selectMenuSubItem(String menuItem, String subMenuItem){
         Actions actions = new Actions(driver);
+
         actions.moveToElement(driver.findElement(By.cssSelector(".all-categories--title>div:first-child")))
-                .moveToElement(driver.findElement(By.cssSelector(".top-category-name-icon a[href='/telefoni']")))
-                .build().perform();
-
-        //HY
-
-
-
-
+                .moveToElement(driver.findElement(By.cssSelector(".top-category-name-icon a[href='/"+menuItem+"']")))
+                .moveToElement(driver.findElement(By.xpath("//a[text()='"+subMenuItem+"']")))
+                .click()
+                .build()
+                .perform();
     }
 
     public void takeScreenshot(String name) throws IOException {
         File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(file,new File("src/results/"+name+".png"));
     }
-    //test
 
+    //Hi
 }
