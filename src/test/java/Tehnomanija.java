@@ -22,6 +22,8 @@ public class Tehnomanija {
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
+    //Nikola Stojkovic Comment
+
     @AfterMethod
     public void tearDown() {
 //        driver.quit();
