@@ -1,3 +1,8 @@
+import io.qameta.allure.Allure;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import jdk.jfr.Description;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,6 +14,10 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 public class Tehnomanija {
@@ -27,7 +36,11 @@ public class Tehnomanija {
 //        driver.quit();
     }
 
-    @Test(enabled = true)
+    @Test(description = "Ime testa")
+    @Description("Opis testa")
+    @Epic("EP-001")
+    @Feature("FE-001")
+    @Story("US-001")
     public void tehnomanija() throws Exception {
         driver.get("https://www.tehnomanija.rs/");
 
@@ -35,6 +48,7 @@ public class Tehnomanija {
         selectCheckboxFilter("Interna memorija","8.0");
 
         Thread.sleep(2000);
+        reportScreenshot("Product","Filter");
         Assert.assertEquals(driver.findElement(By.cssSelector(".product-list>.product p")).getText(),"Alcatel 1C DS - Crni");
     }
 
@@ -78,6 +92,10 @@ public class Tehnomanija {
         FileUtils.copyFile(file,new File("src/results/"+name+".png"));
     }
 
-    //Hi
-    //Test
+    public void reportScreenshot(String name, String desc) throws IOException {
+        takeScreenshot(name);
+        Path content = Paths.get("src/results/"+name+".png");
+        InputStream is = Files.newInputStream(content);
+        Allure.addAttachment(desc,is);
+    }
 }
