@@ -36,5 +36,6 @@ public class Tehnomanija {
         FileUtils.copyFile(file,new File("src/results/"+name+".png"));
     }
     //test
+    // new test
 
 }
