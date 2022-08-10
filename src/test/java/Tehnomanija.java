@@ -98,8 +98,4 @@ public class Tehnomanija {
         InputStream is = Files.newInputStream(content);
         Allure.addAttachment(desc,is);
     }
-
-
-//test cedomir
 }
-
